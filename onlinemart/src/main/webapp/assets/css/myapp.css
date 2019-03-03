@@ -13,24 +13,27 @@ body {
   height: 100%;
 }
 
-/* .wrapper{
+.wrapper{
 	min-height: 100%;
 	position: relative;
 }
 
 .content{
-	padding-bottom: 60px;
+	/* padding-bottom: 60px; */
 }
-*/
+
  footer{
+ 	position:relative;
 	bottom: 0;
+	width:100%
+	
 } 
 
-div
-{
-	color:white;
+.navcolor{
+	background-color: #4c1e8f;
 }
 
-.navcolor{
-	background-color: #3366ff;
+.logo-size{
+	font-size: 200%;
 }
+

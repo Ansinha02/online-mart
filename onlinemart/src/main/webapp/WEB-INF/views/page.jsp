@@ -30,18 +30,20 @@
 
 <!-- Bootstrap core CSS -->
 <link href="${css}/bootstrap.min.css" rel="stylesheet">
-
+ 
 <!-- Bootstrap Sketchy theme CSS -->
-<link href="${css}/bootstrap-sketchy-theme.min.css" rel="stylesheet">
+<link href="${css}/bootstrap-slate-theme.min.css" rel="stylesheet"> 
 
 <!-- Custom styles for this template -->
 <link href="${css}/myapp.css" rel="stylesheet">
+<link href="${css}/breadcrumb.css" rel="stylesheet">
 
 </head>
 
 <body>
 
-	
+	<div class="wrapper">
+		<div class="content">
 
 		<!-- Navigation/Header -->
 		<%@include file="./master/header.jsp"%>
@@ -64,6 +66,18 @@
 				<%@include file="./contact.jsp"%>
 			</c:if>
 			
+			<!-- Sell Here Content -->
+			<c:if test="${userClickSelling == true}">
+				<%@include file="./selling.jsp"%>
+			</c:if>
+			
+			<!-- Categorized List content -->
+			<c:if test="${userClickCategory == true}">
+				<%@include file="./listProduct.jsp"%>
+			</c:if>
+			
+			</div>
+		</div>
 
 
 		<!-- Footer -->
