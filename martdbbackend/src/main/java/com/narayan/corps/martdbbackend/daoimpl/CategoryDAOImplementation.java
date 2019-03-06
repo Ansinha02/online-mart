@@ -1,77 +1,95 @@
 package com.narayan.corps.martdbbackend.daoimpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.narayan.corps.martdbbackend.dao.CategoryDao;
 import com.narayan.corps.martdbbackend.dto.Category;
 
 @Repository("categoryDao")
+@Transactional
 public class CategoryDAOImplementation implements CategoryDao {
 
-	private static List<Category> categories = new ArrayList<Category>();
 	
-	static {
-		Category category = new Category();
-		
-		//adding first category
-		category.setId(1);
-		category.setName("Romantic");
-		category.setDescription("This is romantic category");
-		category.setImageUrl("category1");
-		category.setActive(true);
-		
-		categories.add(category);
-		
-		//adding second category
-		category = new Category();
-		category.setId(2);
-		category.setName("Drama");
-		category.setDescription("This is Drama Category");
-		category.setImageUrl("category2");
-		category.setActive(true);
-		
-		categories.add(category);
-		
-		//adding third category
-		category = new Category();
-		category.setId(3);
-		category.setName("Crime");
-		category.setDescription("All my crime stories");
-		category.setImageUrl("category3");
-		category.setActive(true);
-		
-		categories.add(category);
-		
-		//adding fourth category
-		category = new Category();
-		category.setId(4);
-		category.setName("Horror");
-		category.setDescription("Let us scare some people");
-		category.setImageUrl("category4");
-		category.setActive(true);
-		
-		categories.add(category); 
-	}
+	@Autowired
+	private SessionFactory sessionFactory; 
+	
 	
 	@Override
 	public List<Category> list() {
-		//return whole categories list
-		return categories;
+		String activeCategoryList = "FROM Category WHERE active = :active";
+		
+		Query query = sessionFactory.getCurrentSession().createQuery(activeCategoryList);
+		
+		query.setParameter("active", true);
+		
+		return query.getResultList();
 	}
 
+	/**
+	 * Accessing specific category based on ID
+	 */
 	@Override
 	public Category get(int id) {
-		// returning category details based on specific id
-		for (Category category : categories) {
-			if(category.getId() == id)
-			{
-				return category;
+		
+		return sessionFactory.getCurrentSession().get(Category.class, Integer.valueOf(id));
+	}
+
+	/**
+	 * for adding category to database table
+	 */
+	@Override
+	public boolean add(Category category) {
+		
+		try {
+			//ADD category to the database table
+			sessionFactory.getCurrentSession().persist(category);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+
+	/**
+	 * Updating a specific category
+	 */
+	@Override
+	public boolean update(Category category) {
+		
+		try {
+			//ADD category to the database table
+			sessionFactory.getCurrentSession().update(category);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Deleting a specific category
+	 */
+		@Override
+		public boolean delete(Category category) {
+			
+			category.setActive(false);
+			
+			try {
+				//ADD category to the database table
+				sessionFactory.getCurrentSession().update(category);
+				return true;
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
 			}
 		}
-		return null;
-	}
 
 }
